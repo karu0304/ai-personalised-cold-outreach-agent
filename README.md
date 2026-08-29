@@ -125,6 +125,20 @@ The workflow avoids automatically sending AI-generated outreach without an expli
 10. Activate the workflow when ready.
 
 > The workflow is provided as a sanitized portfolio example. Credentials and private account information are not included.
+
+## Project Outcome
+
+The completed workflow automates the core stages of personalized outbound prospecting:
+
+**Research → Qualification → Personalization → Approval → Outreach → Tracking**
+
+The system successfully handles both approval outcomes:
+
+- **Approved:** sends the personalized outreach email and records the result.
+- **Rejected:** sends a review notification and records the outcome without sending outreach to the lead.
+
+This creates a controlled AI-assisted outreach process while maintaining an auditable record of activity in Google Sheets.
+
 ## Human-in-the-Loop Approval
 
 The system does not automatically send AI-generated outreach.
