@@ -44,7 +44,28 @@ Google Sheets Logging
 - Google Sheets — lead and outreach tracking
 - HTTP/Web Requests — company website research
 - GitHub — workflow versioning and documentation
-  
+
+## Workflow Architecture
+
+Lead Input
+    ↓
+Company Research
+    ↓
+AI Lead Qualification
+    ↓
+AI Cold Email Generation
+    ↓
+Human Approval Gate
+    ↓
+Approval Check
+   ↙           ↘
+Approved      Review
+   ↓            ↓
+Send Approved  Send Review
+Email          Email
+   ↘            ↙
+      Google Sheets
+          Logging
 ## Key Features
 
 - Automated company research
