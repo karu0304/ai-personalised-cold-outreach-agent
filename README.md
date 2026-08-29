@@ -85,3 +85,14 @@ This project demonstrates practical AI automation for a sales/outreach workflow,
 ## Workflow File
 
 The complete n8n workflow is included in this repository as a JSON export.
+
+## Workflow Screenshots
+
+### Workflow Overview
+![Workflow Overview](workflow/screenshots/workflow-overview.png)
+
+### AI Lead Qualification
+![AI Lead Qualification](workflow/screenshots/ai-qualification.png)
+
+### Approved Outreach & Sheet Logging
+![Approved Outreach Result](workflow/screenshots/approved-outreach-result.png)
