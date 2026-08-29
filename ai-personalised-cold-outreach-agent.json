@@ -1,0 +1,570 @@
+{
+  "name": "AI-Powered Personalised Cold Outreach Agent",
+  "nodes": [
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        -752,
+        -176
+      ],
+      "id": "633e1b37-d92b-4b3e-be0a-c556e3327c8a",
+      "name": "When clicking ‘Execute workflow’"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "9ebc2857-06c4-4185-b6d6-16fef749e7c2",
+              "name": "=company",
+              "value": "=Acme AI",
+              "type": "string"
+            },
+            {
+              "id": "a1ebf1be-8e64-4de2-9682-2e086dc748b5",
+              "name": "=website",
+              "value": "=https://example.com",
+              "type": "string"
+            },
+            {
+              "id": "2f23663a-45bb-4854-9311-9c6e93d81f41",
+              "name": "=contact_name",
+              "value": "=John Smith",
+              "type": "string"
+            },
+            {
+              "id": "1ea109bf-e7e7-4a8a-b8e6-012c0c6ac108",
+              "name": "contact_email",
+              "value": "john@example.com",
+              "type": "string"
+            },
+            {
+              "id": "df1e80f6-ea48-4dee-ad69-0916e004509a",
+              "name": "=job_title",
+              "value": "=Head of AI",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.5,
+      "position": [
+        -544,
+        -80
+      ],
+      "id": "4ea33abb-4bb0-44c7-a6d2-5a6fac4c9327",
+      "name": "Lead Input"
+    },
+    {
+      "parameters": {
+        "url": "={{ $json.website }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.5,
+      "position": [
+        -400,
+        -160
+      ],
+      "id": "d3bf532f-baff-4a59-ade4-1828f1cd7245",
+      "name": "Company Research"
+    },
+    {
+      "parameters": {
+        "modelId": {
+          "__rl": true,
+          "value": "models/gemini-3-flash-preview",
+          "mode": "list",
+          "cachedResultName": "models/gemini-3-flash-preview"
+        },
+        "messages": {
+          "values": [
+            {
+              "content": "=You are a B2B sales research assistant.\n\nAnalyze the lead information, company research, and AI qualification below.\n\nCreate a concise sales research brief that will be used to personalize a cold email.\n\nReturn exactly:\n\nCompany Overview:\n[1-2 sentences]\n\nLikely AI Opportunity:\n[1-2 sentences describing a potential AI automation/workflow opportunity]\n\nPersonalization Points:\n1. [specific point]\n2. [specific point]\n3. [specific point]\n\nLead Qualification:\n[include the Lead Score and Priority]\n\nImportant:\n- Use only information supported by the provided data.\n- Do not invent facts.\n- If information is insufficient, clearly say so.\n- Keep the output concise and practical.\n\nLead Information:\nCompany: {{ $('Lead Input').item.json.company }}\nWebsite: {{ $('Lead Input').item.json.website }}\nContact: {{ $('Lead Input').item.json.contact_name }}\nJob Title: {{ $('Lead Input').item.json.job_title }}\n\nCompany Research:\n{{ $('Company Research').item.json.data }}\n\nAI Lead Qualification:\n{{ $('Message a model1').item.json.content.parts[0].text }}"
+            }
+          ]
+        },
+        "builtInTools": {},
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.googleGemini",
+      "typeVersion": 1.2,
+      "position": [
+        144,
+        -176
+      ],
+      "id": "afcadf7c-e46f-47cc-8270-86ef249cffa8",
+      "name": "Message a model",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "a1d4fN6RALyexyvG",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "modelId": {
+          "__rl": true,
+          "value": "models/gemini-3-flash-preview",
+          "mode": "list",
+          "cachedResultName": "models/gemini-3-flash-preview"
+        },
+        "messages": {
+          "values": [
+            {
+              "content": "=You are an expert B2B cold email copywriter.\n\nCreate a concise, personalized cold email using the lead information, company research, sales research brief, and lead qualification.\n\nThe goal is to start a conversation about AI automation services.\n\nRequirements:\n- Personalize the email using the contact's name, job title, and company.\n- Reference a relevant insight from the research when available.\n- Mention a plausible AI automation opportunity only when supported by the research.\n- Keep the email concise and natural.\n- Do not make unsupported claims.\n- Do not mention that AI was used to write the email.\n- Do not use generic phrases such as \"I hope you're doing well.\"\n- End with a simple 15-minute call-to-action.\n- Return ONLY the email in this format:\n\nSubject: [short personalized subject]\n\nBody:\n[Email body]\n\nLead Information:\nCompany: {{ $('Lead Input').item.json.company }}\nWebsite: {{ $('Lead Input').item.json.website }}\nContact: {{ $('Lead Input').item.json.contact_name }}\nJob Title: {{ $('Lead Input').item.json.job_title }}\n\nCompany Research:\n{{ $('Company Research').item.json.data }}\n\nLead Qualification:\n{{ $('Message a model1').item.json.content.parts[0].text }}\n\nSales Research Brief:\n{{ $('Message a model').item.json.content.parts[0].text }}"
+            }
+          ]
+        },
+        "builtInTools": {},
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.googleGemini",
+      "typeVersion": 1.2,
+      "position": [
+        416,
+        -160
+      ],
+      "id": "3d0dd374-906f-4b9e-946e-4957a866b2cc",
+      "name": "Generate Cold Email",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "a1d4fN6RALyexyvG",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "c8c87d37-7466-4be3-a31b-13572cde9a6f",
+              "name": "=approval_status",
+              "value": "=rejected",
+              "type": "string"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.5,
+      "position": [
+        704,
+        -160
+      ],
+      "id": "c3b3d3a8-6e6d-4472-9147-d9a47578262c",
+      "name": "Approval Gate"
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "1zG8t7cdJdWxT5vxeJoDSTDm2QSsKs94ekKzo4fGsfeY",
+          "mode": "list",
+          "cachedResultName": "AI Cold Outreach Log",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1zG8t7cdJdWxT5vxeJoDSTDm2QSsKs94ekKzo4fGsfeY/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1zG8t7cdJdWxT5vxeJoDSTDm2QSsKs94ekKzo4fGsfeY/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Company": "={{ $('Lead Input').item.json.company }}",
+            "website": "={{ $('Lead Input').item.json.website }}",
+            "contact name": "={{ $('Lead Input').item.json.contact_name }}",
+            "job title": "={{ $('Lead Input').item.json.job_title }}",
+            "contact email": "={{ $('Lead Input').item.json.contact_email }}",
+            "research summary": "={{ $('Message a model').item.json.content.parts[0].text }}",
+            "email subject": "={{ $('Generate Cold Email').item.json.content.parts[0].text.match(/^Subject:\\s*(.*)$/m)?.[1]?.trim() }}",
+            "email body": "={{ $('Generate Cold Email').item.json.content.parts[0].text.replace(/^Subject:\\s*.*(?:\\r?\\n|\\r)+/s, '').trim() }}",
+            "approval status": "={{ $('Approval Gate').item.json.approval_status }}",
+            "email status ": "={{ $('Approval Gate').item.json.approval_status === 'approved' ? 'sent' : 'review_required' }}",
+            "time stamp": "={{ $now }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "Company",
+              "displayName": "Company",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "website",
+              "displayName": "website",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "contact name",
+              "displayName": "contact name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "job title",
+              "displayName": "job title",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "contact email",
+              "displayName": "contact email",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "research summary",
+              "displayName": "research summary",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "email subject",
+              "displayName": "email subject",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "email body",
+              "displayName": "email body",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "approval status",
+              "displayName": "approval status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "email status ",
+              "displayName": "email status ",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "time stamp",
+              "displayName": "time stamp",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        864,
+        112
+      ],
+      "id": "ba1ca1c1-64f8-4f9f-bcbf-0d06a2df700b",
+      "name": "Append row in sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "oDj6iBZiiQINeBBZ",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "57a3c8c8-cf79-4f1c-9d5a-5e00ce55434f",
+              "leftValue": "={{ $json.approval_status }}",
+              "rightValue": "=approved",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        320,
+        256
+      ],
+      "id": "50e02fdb-3e93-48b9-9abf-7da6857fddd6",
+      "name": "Approval Check"
+    },
+    {
+      "parameters": {
+        "sendTo": "={{ $('Lead Input').item.json.contact_email }}",
+        "subject": "={{ $json.content.parts[0].text.match(/^Subject:\\s*(.*?)(?:\\r?\\n|\\r)/)?.[1]?.trim() }}",
+        "emailType": "text",
+        "message": "={{ $json.content.parts[0].text.replace(/^Subject:\\s*.*?(?:\\r?\\n|\\r)+/s, '').trim() }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        576,
+        112
+      ],
+      "id": "1730e487-ac1e-4eb8-a2cd-95cd538f6203",
+      "name": "Send Approved Email",
+      "webhookId": "b824e710-408c-4a21-9473-eb79c926a4f2",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "apNzJGjNqL8PcejP",
+          "name": "Gmail account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sendTo": "=karunyakamaraj23@gmail.com",
+        "subject": "=Cold Email Requires Review",
+        "emailType": "text",
+        "message": "=Approval was not granted for the generated cold email.\n\nCompany: {{ $('Lead Input').item.json.company }}\nContact: {{ $('Lead Input').item.json.contact_name }}\nEmail: {{ $('Lead Input').item.json.contact_email }}\n\nApproval Status: {{ $json.approval_status }}\n\nThe email was not sent to the lead.\nPlease review the generated email before proceeding.",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        592,
+        256
+      ],
+      "id": "0972685e-f7d0-40df-a85a-999a2743642e",
+      "name": "Send Review Email",
+      "webhookId": "deeaf093-3c7e-4064-baa8-58e9598ce645",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "apNzJGjNqL8PcejP",
+          "name": "Gmail account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "modelId": {
+          "__rl": true,
+          "value": "models/gemini-3.5-flash",
+          "mode": "list",
+          "cachedResultName": "models/gemini-3.5-flash"
+        },
+        "messages": {
+          "values": [
+            {
+              "content": "=You are a B2B lead qualification assistant.\n\nAnalyze the lead information and company research below.\n\nDetermine whether this company is a good candidate for AI automation or AI workflow services.\n\nReturn exactly:\n\nLead Score: [0-100]\nPriority: [High/Medium/Low]\nBest Fit: [one short sentence]\nReason: [one short sentence]\n\nScoring guidance:\n- 80-100 = strong potential\n- 50-79 = moderate potential\n- 0-49 = low potential\n\nUse only information supported by the provided information.\nDo not invent facts.\nIf the research is insufficient, give a low-confidence/low score rather than making assumptions.\n\nLead Information:\nCompany: {{ $('Lead Input').item.json.company }}\nWebsite: {{ $('Lead Input').item.json.website }}\nContact: {{ $('Lead Input').item.json.contact_name }}\nJob Title: {{ $('Lead Input').item.json.job_title }}\n\nCompany Research:\n{{ $json.data }}"
+            }
+          ]
+        },
+        "builtInTools": {},
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.googleGemini",
+      "typeVersion": 1.2,
+      "position": [
+        -176,
+        -160
+      ],
+      "id": "9c48826b-91f7-4345-b70c-8b58ce6a8cdf",
+      "name": "Message a model1",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "a1d4fN6RALyexyvG",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "When clicking ‘Execute workflow’": {
+      "main": [
+        [
+          {
+            "node": "Lead Input",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Lead Input": {
+      "main": [
+        [
+          {
+            "node": "Company Research",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Company Research": {
+      "main": [
+        [
+          {
+            "node": "Message a model1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Message a model": {
+      "main": [
+        [
+          {
+            "node": "Generate Cold Email",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Generate Cold Email": {
+      "main": [
+        [
+          {
+            "node": "Approval Gate",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Approval Gate": {
+      "main": [
+        [
+          {
+            "node": "Approval Check",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Approval Check": {
+      "main": [
+        [
+          {
+            "node": "Send Approved Email",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Send Review Email",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send Approved Email": {
+      "main": [
+        [
+          {
+            "node": "Append row in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send Review Email": {
+      "main": [
+        [
+          {
+            "node": "Append row in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Message a model1": {
+      "main": [
+        [
+          {
+            "node": "Message a model",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": false
+  },
+  "versionId": "bdf64b68-04ad-4d77-8aeb-0a81d6f1e38f",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "62e154395e870cca90f8f76ed22e7103747400e9ef14d394ee7b5f60f9550b0e"
+  },
+  "nodeGroups": [],
+  "id": "Rn87QH8dn6tXGx0u",
+  "tags": []
+}
