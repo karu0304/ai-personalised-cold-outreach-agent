@@ -35,6 +35,15 @@ Google Sheets Logging
 - 📧 Sends different emails based on approval status
 - 📊 Logs lead, research, email, approval, and status information to Google Sheets
 - 🔄 Handles both approved and rejected/review paths
+
+## Tech Stack
+
+- n8n — workflow orchestration and automation
+- Google Gemini — AI-powered lead qualification and email generation
+- Gmail — outbound email delivery
+- Google Sheets — lead and outreach tracking
+- HTTP/Web Requests — company website research
+- GitHub — workflow versioning and documentation
   
 ## Key Features
 
