@@ -139,6 +139,22 @@ The system successfully handles both approval outcomes:
 
 This creates a controlled AI-assisted outreach process while maintaining an auditable record of activity in Google Sheets.
 
+## Security
+
+This repository contains a sanitized workflow export.
+
+Do not commit:
+
+- API keys
+- OAuth tokens
+- Passwords
+- Private email addresses
+- Private spreadsheet IDs
+- Webhook secrets
+- Other credentials or sensitive information
+
+Credentials should be configured securely inside n8n rather than stored in the workflow or GitHub repository.
+
 ## Human-in-the-Loop Approval
 
 The system does not automatically send AI-generated outreach.
