@@ -155,6 +155,16 @@ Do not commit:
 
 Credentials should be configured securely inside n8n rather than stored in the workflow or GitHub repository.
 
+## Future Improvements
+
+- Connect a dedicated lead source such as a CRM or prospecting platform.
+- Add duplicate-lead detection.
+- Add email personalization based on recent company news.
+- Add configurable outreach rules by lead score and priority.
+- Add follow-up email automation.
+- Add response tracking and outreach analytics.
+- Add additional approval options for different outreach campaigns.
+
 ## Human-in-the-Loop Approval
 
 The system does not automatically send AI-generated outreach.
