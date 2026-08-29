@@ -26,6 +26,16 @@ Approval Check
 ↓
 Google Sheets Logging
 
+## What It Does
+
+- 🔎 Researches a company's website and analyzes the available information
+- 🤖 Uses AI to qualify leads and assign a lead score and priority
+- ✍️ Generates personalized cold outreach emails
+- 👤 Includes a human approval gate before outreach
+- 📧 Sends different emails based on approval status
+- 📊 Logs lead, research, email, approval, and status information to Google Sheets
+- 🔄 Handles both approved and rejected/review paths
+  
 ## Key Features
 
 - Automated company research
