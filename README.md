@@ -66,6 +66,30 @@ Email          Email
    ↘            ↙
       Google Sheets
           Logging
+
+## Key Features
+
+### 🔎 Automated Company Research
+Fetches company website information before the AI evaluates the lead.
+
+### 🧠 AI Lead Qualification
+Analyzes the available research and produces a lead score, priority, potential fit, and reasoning.
+
+### ✍️ Personalized Email Generation
+Uses the lead information and AI research to generate a tailored cold outreach email.
+
+### 👤 Human-in-the-Loop Approval
+AI-generated outreach passes through an approval gate before the email is sent.
+
+### 📧 Conditional Email Delivery
+Approved leads receive the generated outreach email, while rejected leads are routed through a review notification.
+
+### 📊 Automated Outreach Logging
+Both approved and rejected outcomes are recorded in Google Sheets along with lead and email information.
+
+### 🛡️ Controlled AI Execution
+The workflow avoids automatically sending AI-generated outreach without an explicit approval decision.
+
 ## Key Features
 
 - Automated company research
