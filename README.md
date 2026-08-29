@@ -101,6 +101,30 @@ The workflow avoids automatically sending AI-generated outreach without an expli
 - Google Sheets activity logging
 - Timestamped outreach records
 
+## Setup
+
+### Requirements
+
+- n8n instance
+- Google Gemini credentials
+- Gmail credentials
+- Google Sheets credentials
+- A Google Sheet for outreach logging
+
+### Installation
+
+1. Download the workflow JSON from the `workflow/` directory.
+2. Import the JSON workflow into n8n.
+3. Reconnect your Google Gemini credentials.
+4. Reconnect your Gmail credentials.
+5. Reconnect your Google Sheets credentials.
+6. Configure the lead input fields.
+7. Configure the Google Sheet used for outreach logging.
+8. Test the workflow with a sample lead.
+9. Verify both the approved and review paths.
+10. Activate the workflow when ready.
+
+> The workflow is provided as a sanitized portfolio example. Credentials and private account information are not included.
 ## Human-in-the-Loop Approval
 
 The system does not automatically send AI-generated outreach.
